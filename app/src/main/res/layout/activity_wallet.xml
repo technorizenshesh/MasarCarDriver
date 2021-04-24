@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<RelativeLayout
+     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/layout_header"
+        android:id="@+id/header"/>
+
+
+    <RelativeLayout
+        android:id="@+id/rlWallet"
+        android:layout_below="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
+        android:background="@drawable/rounded_green_bg"
+        android:padding="@dimen/_20sdp">
+
+        <TextView
+            android:id="@+id/tvMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_15sdp"
+            android:text="$0.0"
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginTop="-5dp"
+            android:layout_centerHorizontal="true"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_12sdp"
+            android:text="@string/available_balance"
+            android:textColor="@color/white"
+            android:layout_marginTop="-10dp"
+            android:layout_below="@+id/tvMoney"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/poppins_regular"
+            />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/btnWithdrawal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_12sdp"
+        android:text="@string/withdrawal"
+        android:textColor="@color/white"
+        android:layout_marginTop="-35dp"
+        android:layout_below="@+id/rlWallet"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/poppins_regular"
+        android:background="@drawable/rounded_yellow_bg"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:paddingRight="@dimen/_20sdp"
+        android:paddingLeft="@dimen/_20sdp"
+        android:textAllCaps="true"
+        android:layout_marginBottom="@dimen/_20sdp"
+        />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvWallet"
+        android:layout_below="@+id/btnWithdrawal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_wallet"/>
+
+
+
+
+</RelativeLayout>
+</layout>

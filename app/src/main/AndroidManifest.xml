@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.masarcardriver">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+
+
+
+    <application
+        android:name="com.masarcardriver.helper.App"
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/logo"
+        android:supportsRtl="false"
+        android:theme="@style/Theme.TropikVTCDriver"
+        android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true">
+
+
+        <activity android:name="com.masarcardriver.activity.SplashAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.masarcardriver.activity.SelectLangAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+        <activity android:name="com.masarcardriver.activity.LoginAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+        <activity android:name="com.masarcardriver.activity.RegisterAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+        <activity android:name="com.masarcardriver.activity.ForgotPasswordAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+
+        <activity android:name="com.masarcardriver.activity.AddVehicleAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+
+        <activity android:name="com.masarcardriver.activity.AddBankAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+
+        <activity android:name="com.masarcardriver.activity.HomeAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+        <activity android:name="com.masarcardriver.activity.ProfileAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+
+        <activity android:name="com.masarcardriver.activity.NeedHelpAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+        <activity android:name="com.masarcardriver.activity.WalletAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+        <activity android:name="com.masarcardriver.activity.RideHistoryAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+        <activity android:name="com.masarcardriver.activity.TripAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+
+        <activity android:name="com.masarcardriver.activity.RiderFeedbackAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+
+        <activity android:name="com.masarcardriver.activity.EmergencyAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+
+        <activity android:name="com.masarcardriver.activity.HeatViewAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+
+        <activity android:name="com.masarcardriver.activity.TrackAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+
+        <activity android:name="com.masarcardriver.activity.PaymentSummary"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+
+        <activity android:name="com.masarcardriver.activity.TripEndAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+
+        <activity android:name="com.masarcardriver.activity.ManageVehicleAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+
+        <activity android:name="com.masarcardriver.activity.ManageDocumentAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+        <activity android:name="com.masarcardriver.activity.TripStatisticsAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+        <activity android:name="com.masarcardriver.activity.BankDetailAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+
+        <activity android:name="com.masarcardriver.activity.NotificationAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+
+        <activity android:name="com.masarcardriver.activity.EditProfileAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+
+        <activity android:name="com.masarcardriver.activity.ChangePasswordAct"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.masarcardriver.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+
+
+
+
+        <service
+            android:name="com.masarcardriver.helper.MyService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <service
+            android:name=".helper.MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>

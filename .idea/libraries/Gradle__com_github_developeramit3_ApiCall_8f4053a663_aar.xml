@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.developeramit3:ApiCall:8f4053a663@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/94050546ec5fc1fc5a8d5e7de0814b40/jetified-ApiCall-8f4053a663/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/94050546ec5fc1fc5a8d5e7de0814b40/jetified-ApiCall-8f4053a663/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/94050546ec5fc1fc5a8d5e7de0814b40/jetified-ApiCall-8f4053a663/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.developeramit3/ApiCall/8f4053a663/d1b9208ba57f79b31176db0c4cb149ce0027f1e/ApiCall-8f4053a663-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

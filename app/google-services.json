@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "605024204028",
+    "project_id": "masar-b8a4c",
+    "storage_bucket": "masar-b8a4c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605024204028:android:cb2984feaaed98ee16d379",
+        "android_client_info": {
+          "package_name": "com.masarcardriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "605024204028-jcm1ha91kjcnu7f73vn0odl1o67eh2gv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGj13sY3mjmcYcFrLu8CtobZZGhj94CRg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "605024204028-jcm1ha91kjcnu7f73vn0odl1o67eh2gv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

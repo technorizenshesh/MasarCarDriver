@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<data>
+    <variable
+        name="booking"
+        type="com.masarcardriver.model.ModelCurrentBookingResult" />
+</data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/layout_header"
+            android:id="@+id/header"/>
+
+        <LinearLayout
+            android:id="@+id/llNavigate"
+            android:layout_below="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_60sdp"
+            android:weightSum="1"
+            android:background="@drawable/white_green_bg">
+
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight=".75"
+                android:text="@{booking.dropofflocation}"
+                android:maxLines="2"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/_10sdp"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_regular"
+                />
+
+              <RelativeLayout
+                  android:layout_width="0dp"
+                  android:layout_height="match_parent"
+                  android:layout_weight=".25">
+
+
+                   <ImageView
+                       android:id="@+id/ivNavigate"
+                       android:layout_width="@dimen/_20sdp"
+                       android:layout_height="@dimen/_20sdp"
+                       android:src="@drawable/navigate_white"
+                       android:layout_marginLeft="@dimen/_35sdp"
+                       android:layout_marginTop="@dimen/_15sdp"
+                       />
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_below="@+id/ivNavigate"
+                      android:text="@string/navigate"
+                      android:textSize="@dimen/_11sdp"
+                      android:layout_marginTop="@dimen/_3sdp"
+                      android:layout_marginLeft="@dimen/_20sdp"
+                      android:fontFamily="@font/poppins_regular"
+                      android:textColor="@color/white"/>
+
+
+              </RelativeLayout>
+
+
+
+
+
+        </LinearLayout>
+
+        <fragment
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/map"
+            android:layout_below="@+id/llNavigate"
+            android:layout_above="@+id/rlBottom"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+<RelativeLayout
+    android:id="@+id/rlBottom"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_45sdp"
+    android:layout_alignParentBottom="true">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnArrived"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/_10sdp"
+        android:background="@color/btn_green_color"
+        android:text="@string/arrived"
+        android:textAllCaps="false"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/_12sdp"
+        android:textColor="@color/white"
+        android:visibility="visible"/>
+
+
+    <RelativeLayout
+        android:id="@+id/btnBegin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/btn_green_color"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
+        <ng.max.slideview.SlideView
+            android:id="@+id/slideViewBegin"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentBottom="true"
+            app:sv_buttonBackgroundColor="@color/btn_green_color"
+            app:sv_buttonImage="@drawable/slide_img"
+            app:sv_slideBackgroundColor="@color/btn_green_color"
+            app:sv_slideText="@string/slide_to_begin_trip"
+            android:gravity="center_horizontal"
+            app:sv_slideTextColor="@color/white"
+            app:sv_slideTextSize="16sp"
+            app:sv_animateSlideText="true"
+            app:sv_reverseSlide="false"
+            app:sv_buttonImageDisabled="@drawable/down_arrow" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/btnEnd"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/btn_green_color"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
+        <ng.max.slideview.SlideView
+            android:id="@+id/slideViewEnd"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentBottom="true"
+            app:sv_buttonBackgroundColor="@color/btn_green_color"
+            app:sv_buttonImage="@drawable/slide_img"
+            app:sv_slideBackgroundColor="@color/btn_green_color"
+            app:sv_slideText="@string/slide_to_end_trip"
+            android:gravity="center_horizontal"
+            app:sv_slideTextColor="@color/white"
+            app:sv_slideTextSize="16sp"
+            app:sv_animateSlideText="true"
+            app:sv_reverseSlide="false"
+            app:sv_buttonImageDisabled="@drawable/down_arrow" />
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>
+
+
+
+
+    </RelativeLayout>
+</layout>

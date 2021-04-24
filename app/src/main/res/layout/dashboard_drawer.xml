@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data >
+
+        <variable
+            name="driver"
+            type="com.utils.ModelUser" />
+
+    </data>
+
+    <RelativeLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <RelativeLayout
+                    android:id="@+id/layoutUserDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/btn_yello_color"
+                    >
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/userImg"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="@dimen/_100sdp"
+                        android:src="@drawable/user_default"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginLeft="@dimen/_25sdp"
+                        android:layout_alignParentLeft="true"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvUsername"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textSize="@dimen/_15sdp"
+                        android:layout_below="@+id/userImg"
+                        android:text="@{driver.firstName + ' '+ driver.lastName}"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/_30sdp"
+                        android:layout_marginRight="@dimen/_20sdp"
+                        android:layout_marginTop="5dp"
+                        android:layout_alignParentLeft="true"
+                        android:textColor="@color/white"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="@dimen/_13sdp"
+                        android:layout_below="@+id/tvUsername"
+                        android:text="@{driver.email}"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/_30sdp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="-8dp"
+                        android:layout_marginBottom="@dimen/_20sdp"
+                        android:layout_alignParentLeft="true"
+
+                        android:textColor="@color/white"
+                        android:layout_centerHorizontal="true"/>
+
+
+
+
+                </RelativeLayout>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvDrawer"
+                    android:layout_below="@+id/layoutUserDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_drawer"/>
+
+
+
+
+
+
+                <RelativeLayout
+                    android:id="@+id/btnSignout"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_10sdp"
+                    android:layout_below="@+id/rvDrawer"
+
+                    >
+                    <TextView
+                        android:id="@+id/signout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:foreground="?attr/selectableItemBackgroundBorderless"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/_7sdp"
+                        android:layout_marginLeft="@dimen/_45sdp"
+                        android:text="@string/sign_out"
+                        android:textColor="@color/btn_green_color"
+                        android:textSize="@dimen/_14sdp"
+                        android:textAllCaps="false"/>
+
+                    <View
+                        android:layout_below="@+id/signout"
+                        android:layout_width="@dimen/_65sdp"
+                        android:layout_height="1dp"
+                        android:background="@color/blue"
+                        android:layout_marginLeft="@dimen/_48sdp"
+                        android:layout_marginBottom="@dimen/_20sdp"
+                        android:layout_marginTop="-5dp"/>
+
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+</layout>

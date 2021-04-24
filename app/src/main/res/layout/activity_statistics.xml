@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<RelativeLayout
+     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_gray_100">
+
+    <include layout="@layout/layout_header"
+        android:id="@+id/header"/>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardYear"
+        android:layout_below="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:layout_margin="@dimen/_15sdp"
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardElevation="@dimen/_5sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp">
+
+
+
+            <Spinner
+                android:id="@+id/spinnerYear"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/_15sdp"
+                android:paddingRight="@dimen/_10sdp"
+                />
+
+
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <lecho.lib.hellocharts.view.LineChartView
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_below="@+id/cardYear"
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_250sdp" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardEarning"
+        android:layout_below="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardElevation="@dimen/_5sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_15sdp"
+            android:orientation="vertical">
+
+     <RelativeLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvTrips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/tvTotalTrip"
+            android:text="@string/number_of_trips"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins_regular"/>
+
+
+         <TextView
+             android:id="@+id/tvTotalTrip"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="132"
+             android:layout_alignParentRight="true"
+
+             android:textSize="@dimen/_14sdp"
+             android:textColor="@color/black"
+             android:fontFamily="@font/poppins_regular"/>
+
+
+     </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvEarnings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/tvTotalEarning"
+                    android:text="@string/total_earnings"
+                    android:textSize="@dimen/_14sdp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_regular"/>
+
+
+                <TextView
+                    android:id="@+id/tvTotalEarning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$13221"
+                    android:layout_alignParentRight="true"
+
+                    android:textSize="@dimen/_14sdp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_regular"/>
+
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
+</layout>
