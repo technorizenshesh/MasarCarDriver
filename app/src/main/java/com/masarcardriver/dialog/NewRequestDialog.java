@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -26,6 +29,7 @@ import com.masarcardriver.activity.TrackAct;
 import com.masarcardriver.databinding.DialogNewRequestBinding;
 import com.masarcardriver.helper.App;
 import com.masarcardriver.helper.DataManager;
+import com.masarcardriver.listener.onRequestListener;
 import com.masarcardriver.model.BookingDetailModel;
 import com.masarcardriver.model.ModelCurrentBooking;
 import com.masarcardriver.model.ModelCurrentBookingResult;
@@ -48,9 +52,12 @@ import www.develpoeramit.mapicall.ApiCallBuilder;
 public class NewRequestDialog extends Dialog {
     public static String TAG = "NewRequestDialog";
     private ModelCurrentBooking booking;
-    private long timeCountInMilliSeconds = 1 * 60000;
+    private long timeCountInMilliSeconds = 2 * 60000;
     private CountDownTimer countDownTimer;
     DialogNewRequestBinding binding;
+    private Ringtone ring;
+    private onRequestListener listener;
+
     public NewRequestDialog(@NonNull Context context) {
         super(context);
     }
@@ -60,6 +67,10 @@ public class NewRequestDialog extends Dialog {
     }
     public NewRequestDialog setData(ModelCurrentBooking booking){
         this.booking=booking;
+        return this;
+    }
+    public NewRequestDialog Callback(onRequestListener listener){
+        this.listener=listener;
         return this;
     }
 
@@ -76,6 +87,10 @@ public class NewRequestDialog extends Dialog {
     }
 
     private void BindData() {
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        ring = RingtoneManager.getRingtone(getContext(), notification);
+        ring.setLooping(true);
+        ring.play();
         ModelCurrentBookingResult result = booking.getResult().get(0);
         binding.tvPickupLoc.setText(result.getPicuplocation());
         binding.tvDestinationLoc.setText(result.getDropofflocation());
@@ -106,17 +121,16 @@ public class NewRequestDialog extends Dialog {
 
             @Override
             public void onFinish() {
-                dismiss();
+                stopCountDownTimer();
             }
 
         }.start();
     }
 
-    /**
-     * method to stop count down timer
-     */
+
     private void stopCountDownTimer() {
         countDownTimer.cancel();
+        ring.stop();
         dismiss();
     }
 
@@ -149,10 +163,13 @@ public class NewRequestDialog extends Dialog {
                         try {
                             JSONObject object=new JSONObject(response);
                             if (object.getString("status").equals("1")){
+                                SessionManager.get(getContext()).setLastRequestStatus(status);
                                 if (status.equals("Accept")){
-                                    getContext().startActivity(new Intent(getContext(), TrackAct.class));
+                                    listener.onRequestAccept();
+                                }else {
+                                    listener.onRequestCancel();
                                 }
-                                dismiss();
+                                stopCountDownTimer();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

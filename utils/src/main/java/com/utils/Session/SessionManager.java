@@ -44,7 +44,13 @@ public class SessionManager {
   public boolean isUserLogin(){
         return prf.getBoolean(SessionKey.IsUserLogedIn.name(),false);
     }
-    public void CreateSession(String result){
+    public String getLastRequestStatus(){
+        return prf.getString(SessionKey.IsShow.name(),"");
+    }
+    public void setLastRequestStatus(String b){
+        edit.putString(SessionKey.IsShow.name(),b);
+        edit.commit();
+    }public void CreateSession(String result){
         edit.putBoolean(SessionKey.IsUserLogedIn.name(),true);
         edit.putString(SessionKey.UserProfile.name(),result);
         edit.commit();

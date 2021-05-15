@@ -72,10 +72,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_wallet"/>
-
-
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+<TextView style="@style/tv_header"
+    android:text="@string/no_result_found"
+    android:layout_centerInParent="true"/>
 
 
 </RelativeLayout>

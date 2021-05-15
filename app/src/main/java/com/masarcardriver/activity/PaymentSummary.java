@@ -107,6 +107,7 @@ public class PaymentSummary extends AppCompatActivity {
         params.put("timezone", Tools.get().getTimeZone());
         params.put("review", ""+binding.editText.getText().toString());
         ApiCallBuilder.build(this).setUrl(BaseClass.get().add_payment())
+                .isShowProgressBar(true)
                 .setParam(params).execute(new ApiCallBuilder.onResponse() {
             @Override
             public void Success(String response) {

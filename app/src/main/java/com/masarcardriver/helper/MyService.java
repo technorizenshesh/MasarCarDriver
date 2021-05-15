@@ -34,6 +34,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.masarcardriver.R;
+import com.masarcardriver.activity.HomeAct;
+import com.masarcardriver.activity.PaymentSummary;
+import com.masarcardriver.activity.TrackAct;
+import com.masarcardriver.dialog.NewRequestDialog;
+import com.masarcardriver.model.ModelCurrentBooking;
+import com.masarcardriver.model.ModelCurrentBookingResult;
 import com.masarcardriver.retrofit.ApiClient;
 import com.masarcardriver.retrofit.DriverInterface;
 import com.utils.Session.SessionManager;
@@ -54,11 +60,13 @@ public class MyService extends Service {
     private Handler mHandler = new Handler();   // run on another Thread to avoid crash
     private Timer mTimer = null; // timer handling
     DriverInterface apiInterface;
+    private SessionManager sesssion;
 
     public MyService() {}
 
     @Override
     public void onCreate() {
+        sesssion=SessionManager.get(getApplicationContext());
         apiInterface = ApiClient.getClient().create(DriverInterface.class);
         requestNewLocationData();
         String channelId = "channel-01";
@@ -134,8 +142,8 @@ public class MyService extends Service {
                         if (location == null) {
                             requestNewLocationData();
                         } else {
-                            if (SessionManager.get(getApplicationContext()).isUserLogin()) {
-                                updateProviderLatLon(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()), SessionManager.get(getApplicationContext()).getUserID());
+                            if (sesssion.isUserLogin()) {
+                                updateProviderLatLon(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
                             }
                         }
                     }
@@ -144,9 +152,9 @@ public class MyService extends Service {
 
     }
 
-    public void updateProviderLatLon(String lat,String lon,String userId) {
+    public void updateProviderLatLon(String lat,String lon) {
         Map<String,String> map = new HashMap<>();
-        map.put("user_id",userId);
+        map.put("user_id",sesssion.getUserID());
         map.put("lat",lat);
         map.put("lon",lon);
         Log.e(TAG,"Upldate Driver Location Request "+map);
@@ -158,7 +166,7 @@ public class MyService extends Service {
                     Map<String,String> data = response.body();
                     String responseString = new Gson().toJson(response.body());
                     Log.e(TAG,"Upldate Driver Location Response :"+responseString);
-
+                    getCurrentBooking();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -166,6 +174,41 @@ public class MyService extends Service {
 
             @Override
             public void onFailure(Call<Map<String,String>> call, Throwable t) {
+                call.cancel();
+            }
+        });
+
+
+    }
+    public void getCurrentBooking() {
+        Map<String,String> map = new HashMap<>();
+        map.put("user_id",sesssion.getUserID());
+        map.put("type", "DRIVER");
+        Log.e(TAG,"get Current Booking "+map);
+        Call<ModelCurrentBooking> loginCall = apiInterface.getCurrentBooking(map);
+        loginCall.enqueue(new Callback<ModelCurrentBooking>() {
+            @Override
+            public void onResponse(Call<ModelCurrentBooking> call, Response<ModelCurrentBooking> response) {
+                try {
+                    ModelCurrentBooking data = response.body();
+                    String responseString = new Gson().toJson(response.body());
+                    Log.e(TAG,"Upldate Driver Location Response :"+responseString);
+                    if (data.getStatus().equals("1")) {
+                        Log.e("BookingStatus",""+data.getResult().size());
+                        ModelCurrentBookingResult result=data.getResult().get(0);
+                        if (!sesssion.getLastRequestStatus().equals(result.getStatus())) {
+                            sesssion.setLastRequestStatus(result.getStatus());
+                            Intent intent1 = new Intent("Job_Status_Action");
+                            sendBroadcast(intent1);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelCurrentBooking> call, Throwable t) {
                 call.cancel();
             }
         });

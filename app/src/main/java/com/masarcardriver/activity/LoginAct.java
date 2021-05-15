@@ -2,6 +2,7 @@ package com.masarcardriver.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,6 +41,7 @@ public class LoginAct extends AppCompatActivity {
             @Override
             public void onSuccess(String s) {
                 FireBaseID=s;
+                Log.e("FireBaseID",""+FireBaseID);
             }
         });
         binding.btnLogin.setOnClickListener(v -> {

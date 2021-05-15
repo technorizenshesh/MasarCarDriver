@@ -7,6 +7,7 @@ import com.masarcardriver.model.BookingDetailModel;
 import com.masarcardriver.model.BrandListModel;
 import com.masarcardriver.model.CarListModel;
 import com.masarcardriver.model.ModListModel;
+import com.masarcardriver.model.ModelCurrentBooking;
 import com.masarcardriver.model.SignupModel;
 
 import java.util.Map;
@@ -115,6 +116,10 @@ public interface DriverInterface {
     @FormUrlEncoded
     @POST("get_booking_details")
     Call<BookingDetailModel>  bookingDetails(@FieldMap Map<String,String> params);
+
+  @FormUrlEncoded
+    @POST("get_current_booking")
+    Call<ModelCurrentBooking>  getCurrentBooking(@FieldMap Map<String,String> params);
 
 
 

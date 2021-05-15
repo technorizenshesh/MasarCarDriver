@@ -40,6 +40,8 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.SquareCap;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.masarcardriver.Constent.BaseClass;
 import com.masarcardriver.Constent.DrawPollyLine;
 import com.masarcardriver.Dialogs.DialogMessage;
@@ -57,11 +59,13 @@ import com.masarcardriver.model.ModelCurrentBooking;
 import com.masarcardriver.model.ModelCurrentBookingResult;
 import com.masarcardriver.retrofit.ApiClient;
 import com.masarcardriver.retrofit.DriverInterface;
+import com.utils.Session.SessionManager;
 import com.utils.Utils.Tools;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -88,36 +92,42 @@ public class TrackAct extends AppCompatActivity implements OnMapReadyCallback {
     DriverInterface apiInterface;
     private ModelCurrentBooking data;
     private ModelCurrentBookingResult result;
+    private SessionManager session;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         apiInterface = ApiClient.getClient().create(DriverInterface.class);
         polylines = new ArrayList<>();
+        session=SessionManager.get(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_track);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         if (getIntent() != null) {
             data = (ModelCurrentBooking) getIntent().getSerializableExtra("data");
             result = data.getResult().get(0);
-            location = new LatLng(Double.parseDouble(result.getPicuplat()), Double.parseDouble(result.getPickuplon()));
-            dlocation = new LatLng(Double.parseDouble(result.getDroplat()), Double.parseDouble(result.getDroplon()));
-            binding.setBooking(result);
-            if (data.getStatus().equalsIgnoreCase("Arrived")) {
-                binding.btnArrived.setVisibility(View.GONE);
-                binding.btnBegin.setVisibility(View.VISIBLE);
-            } else if (data.getStatus().equalsIgnoreCase("Start")) {
-                binding.btnArrived.setVisibility(View.GONE);
-                binding.btnBegin.setVisibility(View.GONE);
-                binding.btnEnd.setVisibility(View.VISIBLE);
-            } else if (data.getStatus().equalsIgnoreCase("End")) {
-                startActivity(new Intent(TrackAct.this, PaymentSummary.class).putExtra("data", data));
-                finish();
-            } else if (data.getStatus().equalsIgnoreCase("Cancel")) {
-                finish();
-            }
+           BindData();
         }
         initView();
+    }
+
+    private void BindData() {
+        location = new LatLng(Double.parseDouble(result.getPicuplat()), Double.parseDouble(result.getPickuplon()));
+        dlocation = new LatLng(Double.parseDouble(result.getDroplat()), Double.parseDouble(result.getDroplon()));
+        binding.setBooking(result);
+        if (result.getStatus().equalsIgnoreCase("Arrived")) {
+            binding.btnArrived.setVisibility(View.GONE);
+            binding.btnBegin.setVisibility(View.VISIBLE);
+        } else if (result.getStatus().equalsIgnoreCase("Start")) {
+            binding.btnArrived.setVisibility(View.GONE);
+            binding.btnBegin.setVisibility(View.GONE);
+            binding.btnEnd.setVisibility(View.VISIBLE);
+        } else if (result.getStatus().equalsIgnoreCase("End")) {
+            startActivity(new Intent(TrackAct.this, PaymentSummary.class).putExtra("data", data));
+            finish();
+        } else if (result.getStatus().equalsIgnoreCase("Cancel")) {
+            finish();
+        }
     }
 
     private void initView() {
@@ -250,7 +260,7 @@ public class TrackAct extends AppCompatActivity implements OnMapReadyCallback {
         params.put("request_id", result.getId());
         params.put("status", status);
         params.put("timezone", Tools.get().getTimeZone());
-        params.put("driver_id", result.getUserId());
+        params.put("driver_id", session.getUserID());
         params.put("droplat", "" + gpsTracker.getLatitude());
         params.put("droplon", "" + gpsTracker.getLongitude());
         ApiCallBuilder.build(this)
@@ -261,19 +271,24 @@ public class TrackAct extends AppCompatActivity implements OnMapReadyCallback {
                     public void Success(String response) {
                         try {
                             JSONObject object = new JSONObject(response);
-                            if (status.equalsIgnoreCase("Arrived")) {
-                                binding.btnArrived.setVisibility(View.GONE);
-                                binding.btnBegin.setVisibility(View.VISIBLE);
+                            if (object.getString("status").equals("1")) {
+                                session.setLastRequestStatus(status);
+                                if (status.equalsIgnoreCase("Arrived")) {
+                                    binding.btnArrived.setVisibility(View.GONE);
+                                    binding.btnBegin.setVisibility(View.VISIBLE);
 
-                            } else if (status.equalsIgnoreCase("Start")) {
-                                binding.btnArrived.setVisibility(View.GONE);
-                                binding.btnBegin.setVisibility(View.GONE);
-                                binding.btnEnd.setVisibility(View.VISIBLE);
-                            } else if (status.equalsIgnoreCase("End")) {
-                                startActivity(new Intent(TrackAct.this, PaymentSummary.class).putExtra("data", data));
-                                finish();
-                            } else if (status.equalsIgnoreCase("Cancel")) {
-                                finish();
+                                } else if (status.equalsIgnoreCase("Start")) {
+                                    binding.btnArrived.setVisibility(View.GONE);
+                                    binding.btnBegin.setVisibility(View.GONE);
+                                    binding.btnEnd.setVisibility(View.VISIBLE);
+                                } else if (status.equalsIgnoreCase("End")) {
+                                    startActivity(new Intent(TrackAct.this, PaymentSummary.class).putExtra("data", data));
+                                    finish();
+                                } else if (status.equalsIgnoreCase("Cancel")) {
+                                    finish();
+                                }
+                            }else {
+                                DialogMessage.get(TrackAct.this).setMessage("Something went wrong! try again").show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -286,4 +301,5 @@ public class TrackAct extends AppCompatActivity implements OnMapReadyCallback {
                     }
                 });
     }
+
 }

@@ -56,6 +56,7 @@ import com.masarcardriver.helper.GPSTracker;
 import com.masarcardriver.helper.MyService;
 import com.masarcardriver.helper.NetworkReceiver;
 import com.masarcardriver.listener.menuListener;
+import com.masarcardriver.listener.onRequestListener;
 import com.masarcardriver.model.MenuModel;
 import com.masarcardriver.model.ModelCurrentBooking;
 import com.masarcardriver.model.ModelCurrentBookingResult;
@@ -85,7 +86,7 @@ import retrofit2.Response;
 import www.develpoeramit.mapicall.ApiCallBuilder;
 import www.develpoeramit.mapicall.ProgressStyle;
 
-public class HomeAct extends AppCompatActivity implements OnMapReadyCallback, menuListener, NetworkReceiver.ConnectivityReceiverListener {
+public class HomeAct extends AppCompatActivity implements OnMapReadyCallback, menuListener, NetworkReceiver.ConnectivityReceiverListener, onRequestListener {
     public static String TAG = "HomeAct";
     ActivityHomeBinding binding;
     ArrayList<MenuModel> arrayList;
@@ -109,8 +110,6 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback, me
                     MyUtils.rotateMarker(carMarker,bearing);
                 }
             }else {
-                String message = intent.getStringExtra("message");
-                Log.e("Request","====>"+message);
                 GetCurrentBooking();
             }
         }
@@ -118,7 +117,7 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback, me
     private SessionManager session;
     private MarkerOptions carMarker;
     private FusedLocationProviderClient fusedLocationClient;
-
+    private NewRequestDialog requestDialog;
 
 
     @Override
@@ -133,6 +132,7 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback, me
     private void initView() {
         setUserInfo();
         receiver = new NetworkReceiver();
+       requestDialog= NewRequestDialog.get(this).Callback(this);
         App.getInstance().setConnectivityListener(HomeAct.this);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -183,35 +183,35 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback, me
         createLocationRequest();
     }
 
-    private void changeStatus(String status) {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("user_id", session.getUserID());
-        map.put("status", status);
-        map.put("type", "DRIVER");
-        ApiCallBuilder.build(this)
-                .setUrl(BaseClass.get().updateOnlineStatus())
-                .setParam(map).isShowProgressBar(true, ProgressStyle.STYLE_3)
-                .execute(new ApiCallBuilder.onResponse() {
-                    @Override
-                    public void Success(String response) {
-                        Log.e("OnlineChangeresponse", response);
-                        try {
-                            JSONObject object = new JSONObject(response);
-                            if (object.getString("status").equals("1")) {
-                                session.setIsOnline(status.equals("ONLINE"));
-                                binding.chlidDashboard.switchOnOff.setText(session.IsOnline() ? "ONLINE" : "OFFLINE");
+        private void changeStatus(String status) {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("user_id", session.getUserID());
+            map.put("status", status);
+            map.put("type", "DRIVER");
+            ApiCallBuilder.build(this)
+                    .setUrl(BaseClass.get().updateOnlineStatus())
+                    .setParam(map).isShowProgressBar(true, ProgressStyle.STYLE_3)
+                    .execute(new ApiCallBuilder.onResponse() {
+                        @Override
+                        public void Success(String response) {
+                            Log.e("OnlineChangeresponse", response);
+                            try {
+                                JSONObject object = new JSONObject(response);
+                                if (object.getString("status").equals("1")) {
+                                    session.setIsOnline(status.equals("ONLINE"));
+                                    binding.chlidDashboard.switchOnOff.setText(session.IsOnline() ? "ONLINE" : "OFFLINE");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
 
-                    @Override
-                    public void Failed(String error) {
+                        @Override
+                        public void Failed(String error) {
 
-                    }
-                });
-    }
+                        }
+                    });
+        }
 
     public void setUserInfo() {
         session = SessionManager.get(this);
@@ -229,13 +229,13 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback, me
         arrayList.add(new MenuModel(getString(R.string.manage_document), 3));
         arrayList.add(new MenuModel(getString(R.string.manage_vehicles), 4));
         arrayList.add(new MenuModel(getString(R.string.your_trips), 5));
-        arrayList.add(new MenuModel(getString(R.string.bank_details), 6));
-        arrayList.add(new MenuModel(getString(R.string.payment), 7));
+//        arrayList.add(new MenuModel(getString(R.string.bank_details), 6));
+//        arrayList.add(new MenuModel(getString(R.string.payment), 7));
         arrayList.add(new MenuModel(getString(R.string.my_wallet), 8));
         arrayList.add(new MenuModel(getString(R.string.heat_view), 9));
         arrayList.add(new MenuModel(getString(R.string.emergency_contact), 10));
         arrayList.add(new MenuModel(getString(R.string.rider_feedback), 11));
-        arrayList.add(new MenuModel(getString(R.string.trip_statistics), 12));
+//        arrayList.add(new MenuModel(getString(R.string.trip_statistics), 12));
         arrayList.add(new MenuModel(getString(R.string.need_help), 13));
         binding.childNavDrawer.rvDrawer.setAdapter(new AdapterDrawer(HomeAct.this, arrayList, this));
 
@@ -427,8 +427,8 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback, me
                         if (data.getStatus().equals("1")) {
                             Log.e("BookingStatus",""+data.getResult().size());
                             ModelCurrentBookingResult result=data.getResult().get(0);
-                            if (result.getStatus().equalsIgnoreCase("Pending")) {
-                                NewRequestDialog.get(HomeAct.this).setData(data).show();
+                            if (!requestDialog.isShowing()&&result.getStatus().equalsIgnoreCase("Pending")) {
+                                requestDialog.setData(data).show();
                             }else if (result.getStatus().equalsIgnoreCase("Accept")) {
                                 Intent k = new Intent(HomeAct.this, TrackAct.class);
                                 k.putExtra("data",data);
@@ -446,6 +446,7 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback, me
                                 j.putExtra("data",data);
                                 startActivity(j);
                             }
+                            session.setLastRequestStatus(result.getStatus());
                         }
                     }
                 } catch (JSONException e) {
@@ -460,5 +461,15 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback, me
 
             }
         });
+    }
+
+    @Override
+    public void onRequestAccept() {
+        GetCurrentBooking();
+    }
+
+    @Override
+    public void onRequestCancel() {
+        DialogMessage.get(this).setMessage("Request successfully canceled By You").show();
     }
 }
