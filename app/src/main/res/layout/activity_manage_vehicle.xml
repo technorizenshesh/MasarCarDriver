@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="@dimen/_10sdp"
             android:layout_margin="@dimen/_10sdp"
+            android:visibility="gone"
             app:cardElevation="@dimen/_5sdp">
 
             <RelativeLayout
@@ -82,7 +83,24 @@
 
 
         </androidx.cardview.widget.CardView>
-
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recycle_vehicle"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/_10sdp">
+            <ImageView
+                android:id="@+id/img_add_vehicle"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:src="@drawable/ic_add"/>
+        </RelativeLayout>
     </RelativeLayout>
 </layout>

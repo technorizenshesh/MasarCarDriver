@@ -3,9 +3,10 @@ package com.masarcardriver.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ModelRideHistory {
+public class ModelRideHistory implements Serializable {
     @SerializedName("result")
     @Expose
     private ArrayList<Result> result = null;
@@ -40,7 +41,7 @@ public class ModelRideHistory {
         this.status = status;
     }
 
-    public class Result {
+    public class Result implements Serializable {
 
         @SerializedName("id")
         @Expose

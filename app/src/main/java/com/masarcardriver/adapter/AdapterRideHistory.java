@@ -8,21 +8,26 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.masarcardriver.R;
 import com.masarcardriver.databinding.ItemRideHistoryBinding;
-import com.masarcardriver.model.BookingDetailModel;
 import com.masarcardriver.model.ModelRideHistory;
 
 import java.util.ArrayList;
 
 
 public class AdapterRideHistory extends RecyclerView.Adapter<AdapterRideHistory.MyViewHolder> {
+    private final onClickHistory listener;
     Context context;
     ArrayList<ModelRideHistory.Result>list;
 
-    public AdapterRideHistory(Context context, ArrayList<ModelRideHistory.Result> list) {
+    public AdapterRideHistory(Context context, ArrayList<ModelRideHistory.Result> list, onClickHistory listener) {
         this.context = context;
         this.list = list;
+        this.listener=listener;
+    }
+    public interface onClickHistory{
+        void onClickView(ModelRideHistory.Result result);
     }
 
     @NonNull
@@ -36,6 +41,9 @@ public class AdapterRideHistory extends RecyclerView.Adapter<AdapterRideHistory.
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.binding.setData(list.get(position));
         holder.binding.executePendingBindings();
+        holder.itemView.setOnClickListener(v->{
+            listener.onClickView(list.get(position));
+        });
     }
 
     @Override

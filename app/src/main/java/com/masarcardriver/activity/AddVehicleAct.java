@@ -71,12 +71,16 @@ public class AddVehicleAct extends AppCompatActivity implements NetworkReceiver.
     private static final int SELECT_FILE = 2;
     private static final int MY_PERMISSION_CONSTANT = 5;
     private Uri uriSavedImage;
+    private String type="0";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         apiInterface = ApiClient.getClient().create(DriverInterface.class);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_vehicle);
+        if (getIntent().getExtras()!=null){
+            type=getIntent().getExtras().getString("type");
+        }
         initView();
         getCarList();
     }
@@ -193,7 +197,7 @@ public class AddVehicleAct extends AppCompatActivity implements NetworkReceiver.
         binding.header.ivBack.setVisibility(View.GONE);
 
         binding.btnNext.setOnClickListener(v -> {validation(); });
-
+        binding.btnNext.setText(type.equals("1")?"Add Vehicle":"Next");
         binding.rlImg.setOnClickListener(v -> {
             if (checkPermisssionForReadStorage())
                 showImageSelection();
@@ -481,7 +485,9 @@ public class AddVehicleAct extends AppCompatActivity implements NetworkReceiver.
                         String dataResponse = new Gson().toJson(response.body());
                         Log.e(TAG, "ADD VEHICLE RESPONSE" + dataResponse);
                         App.showToast(AddVehicleAct.this, data.message, Toast.LENGTH_SHORT);
-                        startActivity(new Intent(AddVehicleAct.this, AddBankAct.class));
+                        if (type.equals("0")) {
+                            startActivity(new Intent(AddVehicleAct.this, AddBankAct.class));
+                        }
                         finish();
                     } else if (data.status.equals("0")) {
                         App.showToast(AddVehicleAct.this, data.message, Toast.LENGTH_SHORT);

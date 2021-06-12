@@ -231,9 +231,9 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback, me
         arrayList.add(new MenuModel(getString(R.string.your_trips), 5));
 //        arrayList.add(new MenuModel(getString(R.string.bank_details), 6));
 //        arrayList.add(new MenuModel(getString(R.string.payment), 7));
-        arrayList.add(new MenuModel(getString(R.string.my_wallet), 8));
+//        arrayList.add(new MenuModel(getString(R.string.my_wallet), 8));
         arrayList.add(new MenuModel(getString(R.string.heat_view), 9));
-        arrayList.add(new MenuModel(getString(R.string.emergency_contact), 10));
+//        arrayList.add(new MenuModel(getString(R.string.emergency_contact), 10));
         arrayList.add(new MenuModel(getString(R.string.rider_feedback), 11));
 //        arrayList.add(new MenuModel(getString(R.string.trip_statistics), 12));
         arrayList.add(new MenuModel(getString(R.string.need_help), 13));
@@ -299,6 +299,7 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback, me
             App.showSnack(this, findViewById(R.id.drawer_layout), false);
         }
         GetCurrentBooking();
+        getProfile();
     }
 
     @Override
@@ -368,7 +369,7 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback, me
         } else if (arrayList.get(position).getId() == 4) {
             startActivity(new Intent(this,ManageVehicleAct.class));
         } else if (arrayList.get(position).getId() == 5) {
-            startActivity(new Intent(this,TripAct.class));
+            startActivity(new Intent(this,RideHistoryAct.class));
         } else if (arrayList.get(position).getId() == 6) {
             startActivity(new Intent(this,BankDetailAct.class).putExtra("type","1"));
         } else if (arrayList.get(position).getId() == 7) {
@@ -471,5 +472,30 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback, me
     @Override
     public void onRequestCancel() {
         DialogMessage.get(this).setMessage("Request successfully canceled By You").show();
+    }
+    private void getProfile(){
+        HashMap<String,String>param=new HashMap<>();
+        param.put("user_id",session.getUserID());
+        ApiCallBuilder.build(this).setUrl(BaseClass.get().getProfile())
+                .setParam(param).execute(new ApiCallBuilder.onResponse() {
+            @Override
+            public void Success(String response) {
+                Log.e("DriverDetails","===>"+response);
+                try {
+                    JSONObject object=new JSONObject(response);
+                    if (object.getString("status").equals("1")){
+                        session.CreateSession(object.getString("result"));
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void Failed(String error) {
+
+            }
+        });
     }
 }

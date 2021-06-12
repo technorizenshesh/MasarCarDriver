@@ -34,12 +34,8 @@ public class BaseClass {
         Log.e("PathURL","====>"+url);
         return url;
     }
-    public String getNearAllDriver(){
-        return BaseUrl.concat("get_available_driver");
-    }public String getCarList(){
-        return BaseUrl.concat("get_car_type_list");
-    }public String getNearDriver(){
-        return BaseUrl.concat("available_car_driver");
+    public String getNearUser(){
+        return BaseUrl.concat("get_heat_view");
     }
     public String updateOnlineStatus(){
         return BaseUrl.concat("update_online_status");
@@ -51,8 +47,14 @@ public class BaseClass {
     }public String getPayment(){
         return BaseUrl.concat("get_payment");
     }public String getUserHistory(){
-        return BaseUrl.concat("get_user_history");
-    }public String add_payment(){
+        return BaseUrl.concat("get_driver_history");
+    }
+    public String add_payment(){
         return BaseUrl.concat("add_payment");
+    }
+    public String upload_document(){
+        return BaseUrl.concat("upload_document");
+    }public String vehicle_list(){
+        return BaseUrl.concat("vehicle_list");
     }
 }

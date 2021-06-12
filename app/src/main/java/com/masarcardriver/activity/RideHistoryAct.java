@@ -1,5 +1,6 @@
 package com.masarcardriver.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -52,14 +53,22 @@ public class RideHistoryAct extends AppCompatActivity {
             @Override
             public void Success(String response) {
                 Type listType = new TypeToken<ModelRideHistory>(){}.getType();
-                ModelRideHistory data = new GsonBuilder().create().fromJson(response, listType);
-                if (data.getStatus().equals("1")){
-                    binding.rvHistory.setAdapter(new AdapterRideHistory(RideHistoryAct.this,data.getResult()));
+                try {
+                    JSONObject jsonObject=new JSONObject(response);
+                    if (jsonObject.getString("status").contains("1")){
+                        ModelRideHistory data = new GsonBuilder().create().fromJson(response, listType);
+                        binding.rvHistory.setAdapter(new AdapterRideHistory(RideHistoryAct.this,data.getResult(),RideHistoryAct.this::onViewDetails));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
             @Override
             public void Failed(String error) {
             }
         });
+    }
+    private void onViewDetails(ModelRideHistory.Result result) {
+        startActivity(new Intent(this,RideDetailActivity.class).putExtra("data",result));
     }
 }

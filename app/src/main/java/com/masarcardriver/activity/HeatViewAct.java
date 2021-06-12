@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -21,11 +22,26 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.masarcardriver.Constent.BaseClass;
 import com.masarcardriver.R;
 import com.masarcardriver.databinding.ActivityHeatViewBinding;
 import com.masarcardriver.helper.GPSTracker;
+import com.utils.ModelUser;
+import com.utils.Utils.Tools;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import www.develpoeramit.mapicall.ApiCallBuilder;
 
 public class HeatViewAct extends AppCompatActivity implements OnMapReadyCallback {
     ActivityHeatViewBinding binding;
@@ -112,6 +128,47 @@ public class HeatViewAct extends AppCompatActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude())).title("My Location")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.blue_marker)));
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(getCameraPositionWithBearing(new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude()))));
-       
+        getNearUser();
+    }
+    private void getNearUser(){
+        HashMap<String,String> param=new HashMap<>();
+        param.put("lat",""+gpsTracker.getLatitude());
+        param.put("lon",""+gpsTracker.getLongitude());
+        ApiCallBuilder.build(this).setUrl(BaseClass.get().getNearUser())
+                .setParam(param).execute(new ApiCallBuilder.onResponse() {
+            @Override
+            public void Success(String response) {
+                try {
+                    JSONObject object=new JSONObject(response);
+                    if (object.getString("status").equals("1")){
+                        Type listType = new TypeToken<ArrayList<ModelUser>>() {}.getType();
+                        ArrayList<ModelUser> drivers = new GsonBuilder().create().fromJson(object.getString("result"), listType);
+                        if (mMap!=null) {
+                            for (ModelUser driver : drivers) {
+                                LatLng latLng=new LatLng(Double.valueOf(driver.getLat()),Double.valueOf(driver.getLon()));
+                                MarkerOptions car=new MarkerOptions()
+                                        .position(latLng)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.blue_marker))
+                                        .title(driver.getFirstName())
+                                        .snippet(driver.getAvgRating());
+                                CircleOptions options=new CircleOptions();
+                                options.radius(50);
+                                options.center(latLng);
+                                options.strokeColor(Color.parseColor("#F84C4C"));
+                                options.fillColor(Color.parseColor("#F84C4C"));
+                                mMap.addCircle(options);
+                                mMap.addMarker(car).showInfoWindow();
+                            }
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void Failed(String error) {
+
+            }
+        });
     }
 }
